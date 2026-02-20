@@ -44,8 +44,30 @@ Invoke-WebRequest -Uri https://raw.githubusercontent.com/dahln/sshRemoteSetup/ma
 ```
 
 > **Note:** Replace `<IP_ADDRESS>`, `<USERNAME>`, and `<PASSWORD>` with your target server's details. Append optional `[SSH_PORT]` and `[DISABLE_PASSWORD_AUTH]` arguments as needed (see [Parameters](#️-parameters) below).
->
-> ⚠️ **Security:** Before piping any script directly to `bash`, you can review its contents first at the raw URL above. Passwords passed as command-line arguments will appear in your shell history — clear it afterwards or use a shell variable (e.g., `read -s PASS && ./sshRemoteSetup.sh <IP> <USER> "$PASS"`) if that is a concern.
+
+#### 🧹 Cleanup
+
+The Linux/macOS command pipes directly into `bash` without writing a file — no cleanup required.
+
+The Windows command saves a temporary file. Remove it after use:
+
+```powershell
+Remove-Item "$env:TEMP\sshRemoteSetup.cs"
+```
+
+#### 🔒 Shell History
+
+Passwords passed as command-line arguments appear in shell history. Clear them after use:
+
+```bash
+# Linux / macOS (bash)
+history -c && history -w
+```
+
+```powershell
+# Windows (PowerShell)
+[Microsoft.PowerShell.PSConsoleReadLine]::ClearHistory()
+```
 
 ## 🚀 Installation & Setup
 
