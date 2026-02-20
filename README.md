@@ -1,6 +1,6 @@
 # 🔑 SSH Remote Setup
 
-A .NET 10 File-Based App (Windows) **and a Bash shell script (Linux/macOS)** that automate SSH key-based authentication setup on remote Linux machines. These tools eliminate the need for password authentication and provide a convenient way to initialize SSH connectivity to multiple remote servers.
+A **PowerShell script**, a **.NET 10 File-Based App (Windows)**, and a **Bash shell script (Linux/macOS)** that automate SSH key-based authentication setup on remote Linux machines. These tools eliminate the need for password authentication and provide a convenient way to initialize SSH connectivity to multiple remote servers.
 
 ## 🎯 Purpose
 
@@ -15,7 +15,13 @@ This workflow is ideal for DevOps, remote server management, and setting up secu
 
 ## 📋 Requirements
 
-### 🪟 Windows (.NET Script)
+### 🪟 Windows — PowerShell Script
+- **PowerShell 5.1+** (built into Windows 10/11) or **PowerShell Core 7+**
+- **SSH tools** (`ssh-keygen` must be available in PATH - typically pre-installed on Windows 10/11 with recent updates)
+- **Posh-SSH** PowerShell module (auto-installed if missing)
+- **Network connectivity** to target remote Linux machines
+
+### 🪟 Windows — .NET Script
 - **.NET 10 SDK** (required for File-Based App compilation and execution)
 - **Windows OS** (uses Windows-specific path handling)
 - **SSH tools** (`ssh-keygen` must be available in PATH - typically pre-installed on Windows 10/11 with recent updates)
@@ -37,9 +43,17 @@ Run directly without cloning the repository:
 wget -O - https://raw.githubusercontent.com/dahln/sshRemoteSetup/master/sshRemoteSetup.sh | sudo bash -s -- <IP_ADDRESS> <USERNAME> <PASSWORD>
 ```
 
-### 🪟 Windows (PowerShell)
+### 🪟 Windows (PowerShell Script — direct pipe, no temp file)
 
-Unlike `bash`, which can execute scripts piped from stdin, `dotnet run` requires a physical file path for compilation and cannot accept piped input. The command below downloads the file, runs it, and then immediately removes it — all in one line:
+PowerShell can load and execute a `.ps1` script directly from memory — the equivalent of piping to `bash`:
+
+```powershell
+& ([scriptblock]::Create((Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/dahln/sshRemoteSetup/master/sshRemoteSetup.ps1' -UseBasicParsing).Content)) <IP_ADDRESS> <USERNAME> <PASSWORD>
+```
+
+### 🪟 Windows (.NET Script — alternative)
+
+`dotnet run` requires a file path for compilation and cannot accept piped input. This one-liner downloads, runs, and removes the file automatically:
 
 ```powershell
 Invoke-WebRequest -Uri https://raw.githubusercontent.com/dahln/sshRemoteSetup/master/sshRemoteSetup.cs -OutFile "$env:TEMP\sshRemoteSetup.cs"; dotnet run "$env:TEMP\sshRemoteSetup.cs" <IP_ADDRESS> <USERNAME> <PASSWORD>; Remove-Item "$env:TEMP\sshRemoteSetup.cs"
@@ -64,8 +78,9 @@ history -c && history -w
 ## 🚀 Installation & Setup
 
 1. 📥 Clone or download the repository
-2. 🪟 For the .NET script: ensure you have .NET 10 SDK installed
-3. 🐧 For the shell script: make it executable: `chmod +x sshRemoteSetup.sh`
+2. 🪟 For the PowerShell script: ensure PowerShell 5.1+ is available (built into Windows 10/11)
+3. 🪟 For the .NET script: ensure you have .NET 10 SDK installed
+4. 🐧 For the shell script: make it executable: `chmod +x sshRemoteSetup.sh`
 
 ## 💻 Usage
 
@@ -73,6 +88,12 @@ history -c && history -w
 
 ```bash
 ./sshRemoteSetup.sh <IP_ADDRESS> <USERNAME> <PASSWORD> [SSH_PORT] [DISABLE_PASSWORD_AUTH]
+```
+
+### 🪟 Windows — PowerShell Script
+
+```powershell
+.\sshRemoteSetup.ps1 <IP_ADDRESS> <USERNAME> <PASSWORD> [SSH_PORT] [DISABLE_PASSWORD_AUTH]
 ```
 
 ### 🪟 Windows — .NET 10 File-Based App
@@ -100,7 +121,10 @@ dotnet run sshRemoteSetup.cs <IP_ADDRESS> <USERNAME> <PASSWORD> [SSH_PORT] [DISA
 # Linux / macOS
 ./sshRemoteSetup.sh 192.168.1.100 ubuntu mypassword
 
-# Windows
+# Windows (PowerShell)
+.\sshRemoteSetup.ps1 192.168.1.100 ubuntu mypassword
+
+# Windows (.NET)
 dotnet run sshRemoteSetup.cs 192.168.1.100 ubuntu mypassword
 ```
 
@@ -109,7 +133,10 @@ dotnet run sshRemoteSetup.cs 192.168.1.100 ubuntu mypassword
 # Linux / macOS
 ./sshRemoteSetup.sh 192.168.1.100 admin password123 2222
 
-# Windows
+# Windows (PowerShell)
+.\sshRemoteSetup.ps1 192.168.1.100 admin password123 2222
+
+# Windows (.NET)
 dotnet run sshRemoteSetup.cs 192.168.1.100 admin password123 2222
 ```
 
@@ -118,7 +145,10 @@ dotnet run sshRemoteSetup.cs 192.168.1.100 admin password123 2222
 # Linux / macOS
 ./sshRemoteSetup.sh 192.168.1.100 root password123 22 true
 
-# Windows
+# Windows (PowerShell)
+.\sshRemoteSetup.ps1 192.168.1.100 root password123 22 true
+
+# Windows (.NET)
 dotnet run sshRemoteSetup.cs 192.168.1.100 root password123 22 true
 ```
 
@@ -162,6 +192,9 @@ This allows you to simply run `ssh 192.168.1.100` instead of managing keys manua
 
 ### 🐧 Shell Script (`sshRemoteSetup.sh`)
 - **sshpass** - Enables non-interactive password-based SSH authentication; auto-installed via `apt-get` (Debian/Ubuntu), `dnf` (RHEL 8+/Fedora), or `yum` (RHEL 7/CentOS 7) if not already present.
+
+### 🪟 PowerShell Script (`sshRemoteSetup.ps1`)
+- **Posh-SSH** - PowerShell SSH module for managed SSH connectivity; auto-installed from the PowerShell Gallery (`Install-Module Posh-SSH`) if not already present.
 
 ### 🪟 .NET Script (`sshRemoteSetup.cs`)
 - **SSH.NET 2025.1.0** - Managed SSH client library for .NET
