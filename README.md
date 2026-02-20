@@ -18,7 +18,7 @@ This workflow is ideal for DevOps, remote server management, and setting up secu
 ### 🪟 Windows — PowerShell Script
 - **PowerShell 5.1+** (built into Windows 10/11) or **PowerShell Core 7+**
 - **SSH tools** (`ssh-keygen` must be available in PATH - typically pre-installed on Windows 10/11 with recent updates)
-- **Posh-SSH** PowerShell module (auto-installed if missing)
+- **[Posh-SSH](https://github.com/darkoperator/Posh-SSH)** — open-source PowerShell module that provides SSH/SFTP client cmdlets (e.g. `New-SSHSession`, `Invoke-SSHCommand`); auto-installed from the PowerShell Gallery if missing
 - **Network connectivity** to target remote Linux machines
 
 ### 🪟 Windows — .NET Script
@@ -194,7 +194,7 @@ This allows you to simply run `ssh 192.168.1.100` instead of managing keys manua
 - **sshpass** - Enables non-interactive password-based SSH authentication; auto-installed via `apt-get` (Debian/Ubuntu), `dnf` (RHEL 8+/Fedora), or `yum` (RHEL 7/CentOS 7) if not already present.
 
 ### 🪟 PowerShell Script (`sshRemoteSetup.ps1`)
-- **Posh-SSH** - PowerShell SSH module for managed SSH connectivity; auto-installed from the PowerShell Gallery (`Install-Module Posh-SSH`) if not already present.
+- **[Posh-SSH](https://github.com/darkoperator/Posh-SSH)** — open-source PowerShell module ([PowerShell Gallery](https://www.powershellgallery.com/packages/Posh-SSH)) that wraps the SSH2 protocol into native PowerShell cmdlets (`New-SSHSession`, `Invoke-SSHCommand`, etc.). It plays the same role that **SSH.NET** plays for the `.cs` script and **sshpass** plays for the shell script — providing password-based SSH access from the local machine to bootstrap key-based authentication. Auto-installed via `Install-Module Posh-SSH` if not already present.
 
 ### 🪟 .NET Script (`sshRemoteSetup.cs`)
 - **SSH.NET 2025.1.0** - Managed SSH client library for .NET
