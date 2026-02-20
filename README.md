@@ -39,21 +39,13 @@ wget -O - https://raw.githubusercontent.com/dahln/sshRemoteSetup/master/sshRemot
 
 ### 🪟 Windows (PowerShell)
 
+Unlike `bash`, which can execute scripts piped from stdin, `dotnet run` requires a physical file path for compilation and cannot accept piped input. The command below downloads the file, runs it, and then immediately removes it — all in one line:
+
 ```powershell
-Invoke-WebRequest -Uri https://raw.githubusercontent.com/dahln/sshRemoteSetup/master/sshRemoteSetup.cs -OutFile "$env:TEMP\sshRemoteSetup.cs"; dotnet run "$env:TEMP\sshRemoteSetup.cs" <IP_ADDRESS> <USERNAME> <PASSWORD>
+Invoke-WebRequest -Uri https://raw.githubusercontent.com/dahln/sshRemoteSetup/master/sshRemoteSetup.cs -OutFile "$env:TEMP\sshRemoteSetup.cs"; dotnet run "$env:TEMP\sshRemoteSetup.cs" <IP_ADDRESS> <USERNAME> <PASSWORD>; Remove-Item "$env:TEMP\sshRemoteSetup.cs"
 ```
 
 > **Note:** Replace `<IP_ADDRESS>`, `<USERNAME>`, and `<PASSWORD>` with your target server's details. Append optional `[SSH_PORT]` and `[DISABLE_PASSWORD_AUTH]` arguments as needed (see [Parameters](#️-parameters) below).
-
-#### 🧹 Cleanup
-
-The Linux/macOS command pipes directly into `bash` without writing a file — no cleanup required.
-
-The Windows command saves a temporary file. Remove it after use:
-
-```powershell
-Remove-Item "$env:TEMP\sshRemoteSetup.cs"
-```
 
 #### 🔒 Shell History
 
