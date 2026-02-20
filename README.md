@@ -1,6 +1,6 @@
 # SSH Remote Setup
 
-A .NET 10 File-Based App that automates SSH key-based authentication setup on remote Linux machines. This tool eliminates the need for password authentication and provides a convenient way to initialize SSH connectivity to multiple remote servers.
+A .NET 10 File-Based App (Windows) **and a Bash shell script (Linux/macOS)** that automate SSH key-based authentication setup on remote Linux machines. These tools eliminate the need for password authentication and provide a convenient way to initialize SSH connectivity to multiple remote servers.
 
 ## Purpose
 
@@ -15,19 +15,33 @@ This workflow is ideal for DevOps, remote server management, and setting up secu
 
 ## Requirements
 
+### Windows (.NET Script)
 - **.NET 10 SDK** (required for File-Based App compilation and execution)
 - **Windows OS** (uses Windows-specific path handling)
 - **SSH tools** (`ssh-keygen` must be available in PATH - typically pre-installed on Windows 10/11 with recent updates)
 - **Network connectivity** to target remote Linux machines
 
+### Linux / macOS (Shell Script)
+- **Bash** (version 4+; required for the `${var,,}` lowercase expansion used for parameter normalisation)
+- **ssh-keygen** (typically pre-installed)
+- **sshpass** (installed automatically if missing, requires `sudo`; available in standard repos for Ubuntu/Debian and RHEL/CentOS/Fedora)
+- **Network connectivity** to target remote Linux machines
+
 ## Installation & Setup
 
 1. Clone or download the repository
-2. Ensure you have .NET 10 SDK installed
+2. For the .NET script: ensure you have .NET 10 SDK installed
+3. For the shell script: make it executable: `chmod +x sshRemoteSetup.sh`
 
 ## Usage
 
-### Running as a .NET 10 File-Based App
+### Linux / macOS — Shell Script
+
+```bash
+./sshRemoteSetup.sh <IP_ADDRESS> <USERNAME> <PASSWORD> [SSH_PORT] [DISABLE_PASSWORD_AUTH]
+```
+
+### Windows — .NET 10 File-Based App
 
 A File-Based App allows you to run a single C# file directly without a project file:
 
@@ -49,16 +63,28 @@ dotnet run sshRemoteSetup.cs <IP_ADDRESS> <USERNAME> <PASSWORD> [SSH_PORT] [DISA
 
 **Basic usage** - Set up SSH key authentication to a remote server:
 ```bash
+# Linux / macOS
+./sshRemoteSetup.sh 192.168.1.100 ubuntu mypassword
+
+# Windows
 dotnet run sshRemoteSetup.cs 192.168.1.100 ubuntu mypassword
 ```
 
 **Custom SSH port** - Connect to a server running SSH on a non-standard port:
 ```bash
+# Linux / macOS
+./sshRemoteSetup.sh 192.168.1.100 admin password123 2222
+
+# Windows
 dotnet run sshRemoteSetup.cs 192.168.1.100 admin password123 2222
 ```
 
 **Full security hardening** - Disable password authentication after key setup:
 ```bash
+# Linux / macOS
+./sshRemoteSetup.sh 192.168.1.100 root password123 22 true
+
+# Windows
 dotnet run sshRemoteSetup.cs 192.168.1.100 root password123 22 true
 ```
 
@@ -100,6 +126,10 @@ This allows you to simply run `ssh 192.168.1.100` instead of managing keys manua
 
 ## Dependencies
 
+### Shell Script (`sshRemoteSetup.sh`)
+- **sshpass** - Enables non-interactive password-based SSH authentication; auto-installed via `apt-get` (Debian/Ubuntu), `dnf` (RHEL 8+/Fedora), or `yum` (RHEL 7/CentOS 7) if not already present.
+
+### .NET Script (`sshRemoteSetup.cs`)
 - **SSH.NET 2025.1.0** - Managed SSH client library for .NET
   (Automatically managed via package reference in the code)
 
@@ -113,5 +143,6 @@ This allows you to simply run `ssh 192.168.1.100` instead of managing keys manua
 ## Troubleshooting
 
 - **"ssh-keygen not found"**: Ensure SSH tools are in your system PATH
+- **"sshpass not found"**: The script attempts auto-install; if it fails, install manually (`sudo apt-get install sshpass` or `sudo dnf install sshpass`)
 - **Connection failed**: Verify IP address, credentials, and firewall settings
 - **Permission denied**: Ensure the user has sudo privileges or sshd_config is world-writable
