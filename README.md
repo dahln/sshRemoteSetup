@@ -27,6 +27,26 @@ This workflow is ideal for DevOps, remote server management, and setting up secu
 - **sshpass** (installed automatically if missing, requires `sudo`; available in standard repos for Ubuntu/Debian and RHEL/CentOS/Fedora)
 - **Network connectivity** to target remote Linux machines
 
+## ⚡ Quick Start — Download & Run
+
+Run directly without cloning the repository:
+
+### 🐧 Linux / macOS
+
+```bash
+wget -O - https://raw.githubusercontent.com/dahln/sshRemoteSetup/master/sshRemoteSetup.sh | sudo bash -s -- <IP_ADDRESS> <USERNAME> <PASSWORD>
+```
+
+### 🪟 Windows (PowerShell)
+
+```powershell
+Invoke-WebRequest -Uri https://raw.githubusercontent.com/dahln/sshRemoteSetup/master/sshRemoteSetup.cs -OutFile "$env:TEMP\sshRemoteSetup.cs"; dotnet run "$env:TEMP\sshRemoteSetup.cs" <IP_ADDRESS> <USERNAME> <PASSWORD>
+```
+
+> **Note:** Replace `<IP_ADDRESS>`, `<USERNAME>`, and `<PASSWORD>` with your target server's details. Append optional `[SSH_PORT]` and `[DISABLE_PASSWORD_AUTH]` arguments as needed (see [Parameters](#️-parameters) below).
+>
+> ⚠️ **Security:** Before piping any script directly to `bash`, you can review its contents first at the raw URL above. Passwords passed as command-line arguments will appear in your shell history — clear it afterwards or use a shell variable (e.g., `read -s PASS && ./sshRemoteSetup.sh <IP> <USER> "$PASS"`) if that is a concern.
+
 ## 🚀 Installation & Setup
 
 1. 📥 Clone or download the repository
