@@ -43,22 +43,6 @@ Run directly without cloning the repository:
 wget -O - https://raw.githubusercontent.com/dahln/sshRemoteSetup/master/sshRemoteSetup.sh | sudo bash -s -- <IP_ADDRESS> <USERNAME> <PASSWORD>
 ```
 
-### 🪟 Windows (PowerShell Script — direct pipe, no temp file)
-
-PowerShell can load and execute a `.ps1` script directly from memory — the equivalent of piping to `bash`:
-
-```powershell
-& ([scriptblock]::Create((Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/dahln/sshRemoteSetup/master/sshRemoteSetup.ps1' -UseBasicParsing).Content)) <IP_ADDRESS> <USERNAME> <PASSWORD>
-```
-
-### 🪟 Windows (.NET Script — alternative)
-
-`dotnet run` requires a file path for compilation and cannot accept piped input. This one-liner downloads, runs, and removes the file automatically:
-
-```powershell
-Invoke-WebRequest -Uri https://raw.githubusercontent.com/dahln/sshRemoteSetup/master/sshRemoteSetup.cs -OutFile "$env:TEMP\sshRemoteSetup.cs"; dotnet run "$env:TEMP\sshRemoteSetup.cs" <IP_ADDRESS> <USERNAME> <PASSWORD>; Remove-Item "$env:TEMP\sshRemoteSetup.cs"
-```
-
 > **Note:** Replace `<IP_ADDRESS>`, `<USERNAME>`, and `<PASSWORD>` with your target server's details. Append optional `[SSH_PORT]` and `[DISABLE_PASSWORD_AUTH]` arguments as needed (see [Parameters](#️-parameters) below).
 
 #### 🔒 Shell History
@@ -70,10 +54,7 @@ Passwords passed as command-line arguments appear in shell history. Clear them a
 history -c && history -w
 ```
 
-```powershell
-# Windows (PowerShell)
-[Microsoft.PowerShell.PSConsoleReadLine]::ClearHistory()
-```
+Windows users can use **WSL** (Windows Subsystem for Linux) with the shell script above, or download and run the `.cs` or `.ps1` scripts locally (see [Installation & Setup](#-installation--setup) below).
 
 ## 🚀 Installation & Setup
 
