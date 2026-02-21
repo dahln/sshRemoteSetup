@@ -1,6 +1,6 @@
 # 🔑 SSH Remote Setup
 
-A .NET 10 File-Based App (Windows) **and a Bash shell script (Linux/macOS)** that automate SSH key-based authentication setup on remote Linux machines. These tools eliminate the need for password authentication and provide a convenient way to initialize SSH connectivity to multiple remote servers.
+A **.NET 10 File-Based App (Windows)** and a **Bash shell script (Linux/macOS)** that automate SSH key-based authentication setup on remote Linux machines. These tools eliminate the need for password authentication and provide a convenient way to initialize SSH connectivity to multiple remote servers.
 
 ## 🎯 Purpose
 
@@ -15,7 +15,7 @@ This workflow is ideal for DevOps, remote server management, and setting up secu
 
 ## 📋 Requirements
 
-### 🪟 Windows (.NET Script)
+### 🪟 Windows (.NET Program)
 - **.NET 10 SDK** (required for File-Based App compilation and execution)
 - **Windows OS** (uses Windows-specific path handling)
 - **SSH tools** (`ssh-keygen` must be available in PATH - typically pre-installed on Windows 10/11 with recent updates)
@@ -27,11 +27,34 @@ This workflow is ideal for DevOps, remote server management, and setting up secu
 - **sshpass** (installed automatically if missing, requires `sudo`; available in standard repos for Ubuntu/Debian and RHEL/CentOS/Fedora)
 - **Network connectivity** to target remote Linux machines
 
+## ⚡ Quick Start — Download & Run
+
+Run directly without cloning the repository:
+
+### 🐧 Linux / macOS
+
+```bash
+wget -O - https://raw.githubusercontent.com/dahln/sshRemoteSetup/master/sshRemoteSetup.sh | sudo bash -s -- <IP_ADDRESS> <USERNAME> <PASSWORD>
+```
+
+> **Note:** Replace `<IP_ADDRESS>`, `<USERNAME>`, and `<PASSWORD>` with your target server's details. Append optional `[SSH_PORT]` and `[DISABLE_PASSWORD_AUTH]` arguments as needed (see [Parameters](#️-parameters) below).
+
+#### 🔒 Shell History
+
+Passwords passed as command-line arguments appear in shell history. Clear them after use:
+
+```bash
+# Linux / macOS (bash)
+history -c && history -w
+```
+
+Windows users can use **WSL** (Windows Subsystem for Linux) with the shell script above, or download and run the C# program locally (see [Installation & Setup](#-installation--setup) below).
+
 ## 🚀 Installation & Setup
 
 1. 📥 Clone or download the repository
-2. 🪟 For the .NET script: ensure you have .NET 10 SDK installed
-3. 🐧 For the shell script: make it executable: `chmod +x sshRemoteSetup.sh`
+2. 🪟 Ensure you have .NET 10 SDK installed
+3. 🐧 For the shell script (on linux) make it executable: `chmod +x sshRemoteSetup.sh`
 
 ## 💻 Usage
 
@@ -129,7 +152,7 @@ This allows you to simply run `ssh 192.168.1.100` instead of managing keys manua
 ### 🐧 Shell Script (`sshRemoteSetup.sh`)
 - **sshpass** - Enables non-interactive password-based SSH authentication; auto-installed via `apt-get` (Debian/Ubuntu), `dnf` (RHEL 8+/Fedora), or `yum` (RHEL 7/CentOS 7) if not already present.
 
-### 🪟 .NET Script (`sshRemoteSetup.cs`)
+### 🪟 .NET Program (`sshRemoteSetup.cs`)
 - **SSH.NET 2025.1.0** - Managed SSH client library for .NET
   (Automatically managed via package reference in the code)
 
