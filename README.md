@@ -1,6 +1,6 @@
 # 🔑 SSH Remote Setup
 
-A **PowerShell script**, a **.NET 10 File-Based App (Windows)**, and a **Bash shell script (Linux/macOS)** that automate SSH key-based authentication setup on remote Linux machines. These tools eliminate the need for password authentication and provide a convenient way to initialize SSH connectivity to multiple remote servers.
+A **.NET 10 File-Based App (Windows)** and a **Bash shell script (Linux/macOS)** that automate SSH key-based authentication setup on remote Linux machines. These tools eliminate the need for password authentication and provide a convenient way to initialize SSH connectivity to multiple remote servers.
 
 ## 🎯 Purpose
 
@@ -15,13 +15,7 @@ This workflow is ideal for DevOps, remote server management, and setting up secu
 
 ## 📋 Requirements
 
-### 🪟 Windows — PowerShell Script
-- **PowerShell 5.1+** (built into Windows 10/11) or **PowerShell Core 7+**
-- **SSH tools** (`ssh-keygen` must be available in PATH - typically pre-installed on Windows 10/11 with recent updates)
-- **[Posh-SSH](https://github.com/darkoperator/Posh-SSH)** — open-source PowerShell module that provides SSH/SFTP client cmdlets (e.g. `New-SSHSession`, `Invoke-SSHCommand`); auto-installed from the PowerShell Gallery if missing
-- **Network connectivity** to target remote Linux machines
-
-### 🪟 Windows — .NET Script
+### 🪟 Windows (.NET Script)
 - **.NET 10 SDK** (required for File-Based App compilation and execution)
 - **Windows OS** (uses Windows-specific path handling)
 - **SSH tools** (`ssh-keygen` must be available in PATH - typically pre-installed on Windows 10/11 with recent updates)
@@ -54,14 +48,13 @@ Passwords passed as command-line arguments appear in shell history. Clear them a
 history -c && history -w
 ```
 
-Windows users can use **WSL** (Windows Subsystem for Linux) with the shell script above, or download and run the `.cs` or `.ps1` scripts locally (see [Installation & Setup](#-installation--setup) below).
+Windows users can use **WSL** (Windows Subsystem for Linux) with the shell script above, or download and run the `.cs` script locally (see [Installation & Setup](#-installation--setup) below).
 
 ## 🚀 Installation & Setup
 
 1. 📥 Clone or download the repository
-2. 🪟 For the PowerShell script: ensure PowerShell 5.1+ is available (built into Windows 10/11)
-3. 🪟 For the .NET script: ensure you have .NET 10 SDK installed
-4. 🐧 For the shell script: make it executable: `chmod +x sshRemoteSetup.sh`
+2. 🪟 For the .NET script: ensure you have .NET 10 SDK installed
+3. 🐧 For the shell script: make it executable: `chmod +x sshRemoteSetup.sh`
 
 ## 💻 Usage
 
@@ -69,12 +62,6 @@ Windows users can use **WSL** (Windows Subsystem for Linux) with the shell scrip
 
 ```bash
 ./sshRemoteSetup.sh <IP_ADDRESS> <USERNAME> <PASSWORD> [SSH_PORT] [DISABLE_PASSWORD_AUTH]
-```
-
-### 🪟 Windows — PowerShell Script
-
-```powershell
-.\sshRemoteSetup.ps1 <IP_ADDRESS> <USERNAME> <PASSWORD> [SSH_PORT] [DISABLE_PASSWORD_AUTH]
 ```
 
 ### 🪟 Windows — .NET 10 File-Based App
@@ -102,10 +89,7 @@ dotnet run sshRemoteSetup.cs <IP_ADDRESS> <USERNAME> <PASSWORD> [SSH_PORT] [DISA
 # Linux / macOS
 ./sshRemoteSetup.sh 192.168.1.100 ubuntu mypassword
 
-# Windows (PowerShell)
-.\sshRemoteSetup.ps1 192.168.1.100 ubuntu mypassword
-
-# Windows (.NET)
+# Windows
 dotnet run sshRemoteSetup.cs 192.168.1.100 ubuntu mypassword
 ```
 
@@ -114,10 +98,7 @@ dotnet run sshRemoteSetup.cs 192.168.1.100 ubuntu mypassword
 # Linux / macOS
 ./sshRemoteSetup.sh 192.168.1.100 admin password123 2222
 
-# Windows (PowerShell)
-.\sshRemoteSetup.ps1 192.168.1.100 admin password123 2222
-
-# Windows (.NET)
+# Windows
 dotnet run sshRemoteSetup.cs 192.168.1.100 admin password123 2222
 ```
 
@@ -126,10 +107,7 @@ dotnet run sshRemoteSetup.cs 192.168.1.100 admin password123 2222
 # Linux / macOS
 ./sshRemoteSetup.sh 192.168.1.100 root password123 22 true
 
-# Windows (PowerShell)
-.\sshRemoteSetup.ps1 192.168.1.100 root password123 22 true
-
-# Windows (.NET)
+# Windows
 dotnet run sshRemoteSetup.cs 192.168.1.100 root password123 22 true
 ```
 
@@ -173,9 +151,6 @@ This allows you to simply run `ssh 192.168.1.100` instead of managing keys manua
 
 ### 🐧 Shell Script (`sshRemoteSetup.sh`)
 - **sshpass** - Enables non-interactive password-based SSH authentication; auto-installed via `apt-get` (Debian/Ubuntu), `dnf` (RHEL 8+/Fedora), or `yum` (RHEL 7/CentOS 7) if not already present.
-
-### 🪟 PowerShell Script (`sshRemoteSetup.ps1`)
-- **[Posh-SSH](https://github.com/darkoperator/Posh-SSH)** — open-source PowerShell module ([PowerShell Gallery](https://www.powershellgallery.com/packages/Posh-SSH)) that wraps the SSH2 protocol into native PowerShell cmdlets (`New-SSHSession`, `Invoke-SSHCommand`, etc.). It plays the same role that **SSH.NET** plays for the `.cs` script and **sshpass** plays for the shell script — providing password-based SSH access from the local machine to bootstrap key-based authentication. Auto-installed via `Install-Module Posh-SSH` if not already present.
 
 ### 🪟 .NET Script (`sshRemoteSetup.cs`)
 - **SSH.NET 2025.1.0** - Managed SSH client library for .NET
